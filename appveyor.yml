@@ -1,0 +1,39 @@
+branches:
+  only:
+    - staging
+    - trying
+    - master
+environment:
+  matrix:
+    - TARGET: x86_64-pc-windows-gnu
+      CHANNEL: stable
+      MSYS_BITS: 64
+    - TARGET: x86_64-pc-windows-gnu
+      CHANNEL: beta
+      MSYS_BITS: 64
+    - TARGET: x86_64-pc-windows-gnu
+      CHANNEL: nightly
+      MSYS_BITS: 64
+      EXTRA_ARGS: --features "clippy"
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: stable
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: beta
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: nightly
+      EXTRA_ARGS: --features "clippy"
+matrix:
+  allow_failures:
+    - CHANNEL: nightly
+install:
+  - SET PATH=%USERPROFILE%\.cargo\bin;%PATH%
+  - IF DEFINED MSYS_BITS set C:\msys64\mingw%MSYS_BITS%\bin;PATH=%PATH%
+  - ps: Start-FileDownload "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
+  - rustup-init.exe -y --no-modify-path --default-host %TARGET% --default-toolchain %CHANNEL%
+  - rustup -vV
+  - rustc -vV
+  - cargo -vV
+build_script:
+  - cargo build -vv --target=%TARGET% %EXTRA_ARGS%
+test_script:
+  - cargo test -vv --target=%TARGET% %EXTRA_ARGS%

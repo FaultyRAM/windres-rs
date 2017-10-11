@@ -1,0 +1,30 @@
+branches:
+  only:
+    - staging
+    - trying
+    - master
+sudo: false
+env:
+  - FORMATTING=true
+  - FORMATTING=false
+os:
+  - linux
+  - osx
+language: rust
+rust:
+  - stable
+  - beta
+  - nightly
+matrix:
+  allow_failures:
+    - env: "FORMATTING=false"
+      rust: nightly
+  exclude:
+    - env: "FORMATTING=true"
+      os: osx
+    - env: "FORMATTING=true"
+      rust: stable
+    - env: "FORMATTING=true"
+      rust: beta
+before_install: chmod +x ./.travis-script.sh
+script: ./.travis-script.sh

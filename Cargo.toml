@@ -1,0 +1,29 @@
+[package]
+name = "windres"
+version = "0.1.0"
+authors = ["FaultyRAM <explodingpsu@gmail.com>"]
+description = "Compiles Windows resource files (.rc) into a Rust program."
+repository = "https://github.com/FaultyRAM/windres-rs"
+readme = "README.md"
+keywords = ["Windows", "resource", ".rc"]
+categories = ["development-tools", "os::windows-apis"]
+license = "Apache-2.0 OR MIT"
+
+[badges.appveyor]
+repository = "FaultyRAM/windres-rs"
+
+[badges.travis-ci]
+repository = "FaultyRAM/windres-rs"
+
+[badges.is-it-maintained-issue-resolution]
+repository = "FaultyRAM/windres-rs"
+
+[badges.is-it-maintained-open-issues]
+repository = "FaultyRAM/windres-rs"
+
+[badges.maintenance]
+status = "actively-developed"
+
+[dependencies.clippy]
+version = "0.0"
+optional = true
