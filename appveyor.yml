@@ -35,5 +35,6 @@ install:
   - cargo -vV
 build_script:
   - cargo build -vv --target=%TARGET% %EXTRA_ARGS%
+  - cargo doc -vv --target=%TARGET% %EXTRA_ARGS%
 test_script:
   - cargo test -vv --target=%TARGET% %EXTRA_ARGS%

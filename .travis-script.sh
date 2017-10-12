@@ -4,5 +4,6 @@ if ["$FORMATTING" = "true"]; then
     cargo fmt -- --write-mode diff;
 else
     cargo build -vv;
+    cargo doc -vv;
     cargo test -vv;
 fi
