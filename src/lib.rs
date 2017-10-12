@@ -7,6 +7,7 @@
 
 //! Compiles Windows resource files (.rc) into a Rust program.
 
+#![cfg(windows)]
 #![cfg_attr(feature = "clippy", feature(plugin))]
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 #![cfg_attr(feature = "clippy", forbid(clippy))]
@@ -27,3 +28,57 @@
 #![deny(unused_qualifications)]
 #![forbid(unused_results)]
 #![forbid(variant_size_differences)]
+
+use std::path::{Path, PathBuf};
+
+#[derive(Debug, Clone)]
+/// A builder for compiling Windows resources.
+pub struct Build {
+    /// A list of additional include paths to use during preprocessing.
+    extra_include_dirs: Vec<PathBuf>,
+    /// A list of additional preprocessor definitions to use during preprocessing.
+    extra_cpp_defs: Vec<(String, Option<String>)>,
+    /// A list of preprocessor symbols to undefine during preprocessing.
+    cpp_undefs: Vec<String>,
+}
+
+impl Build {
+    /// Creates a new, empty builder.
+    pub fn new() -> Self {
+        Self {
+            extra_include_dirs: Vec::new(),
+            extra_cpp_defs: Vec::new(),
+            cpp_undefs: Vec::new(),
+        }
+    }
+
+    /// Specifies an additional include path to use during preprocessing.
+    pub fn include<P: AsRef<Path>>(&mut self, path: P) -> &mut Self {
+        self.extra_include_dirs.push(path.as_ref().to_owned());
+        self
+    }
+
+    /// Specifies an additional preprocessor definition to use during preprocessing.
+    pub fn define<'a, V: Into<Option<&'a str>>>(&mut self, name: &str, value: V) -> &mut Self {
+        self.extra_cpp_defs
+            .push((name.to_owned(), value.into().map(|s| s.to_owned())));
+        self
+    }
+
+    /// Specifies a preprocessor symbol to undefine during preprocessing.
+    pub fn undefine(&mut self, name: &str) -> &mut Self {
+        self.cpp_undefs.push(name.to_owned());
+        self
+    }
+
+    /// Compiles a Windows resource file (.rc).
+    pub fn compile<P>(&mut self, _rc_file: P) -> Result<(), ()> {
+        unimplemented!()
+    }
+}
+
+impl Default for Build {
+    fn default() -> Self {
+        Self::new()
+    }
+}
