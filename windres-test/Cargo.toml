@@ -1,0 +1,9 @@
+[package]
+name = "windres-test"
+version = "0.1.0"
+authors = ["FaultyRAM <explodingpsu@gmail.com>"]
+workspace = ".."
+publish = false
+
+[target.'cfg(windows)'.build-dependencies.windres]
+path = ".."

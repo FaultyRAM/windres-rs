@@ -1,3 +1,6 @@
+[workspace]
+members = ["windres-test"]
+
 [package]
 name = "windres"
 version = "0.1.0"
