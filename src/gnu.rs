@@ -8,8 +8,7 @@
 //! GNU implementation details.
 
 use std::io;
-use std::path::PathBuf;
-use std::process::ExitStatus;
+use std::path::{Path, PathBuf};
 use Build;
 
 impl Build {
