@@ -1,3 +1,5 @@
+image:
+  - Visual Studio 2017
 branches:
   only:
     - staging
@@ -37,4 +39,4 @@ build_script:
   - cargo build -vv --target=%TARGET% %EXTRA_ARGS%
   - cargo doc -vv --target=%TARGET% %EXTRA_ARGS%
 test_script:
-  - cargo test -vv --target=%TARGET% %EXTRA_ARGS%
+  - IF NOT DEFINED MSYS_BITS cargo run -p windres-test -vv --target=%TARGET% %EXTRA_ARGS%

@@ -12,8 +12,8 @@
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 #![cfg_attr(feature = "clippy", forbid(clippy))]
 #![cfg_attr(feature = "clippy", forbid(clippy_internal))]
-#![cfg_attr(feature = "clippy", forbid(clippy_pedantic))]
-#![cfg_attr(feature = "clippy", forbid(clippy_restrictions))]
+#![cfg_attr(feature = "clippy", deny(clippy_pedantic))]
+#![cfg_attr(feature = "clippy", deny(clippy_restrictions))]
 #![forbid(warnings)]
 #![forbid(anonymous_parameters)]
 #![forbid(box_pointers)]
@@ -29,9 +29,21 @@
 #![forbid(unused_results)]
 #![forbid(variant_size_differences)]
 
+#[cfg(target_env = "msvc")]
+#[macro_use(concat_string)]
+extern crate concat_string;
+
+use std::io;
 use std::path::{Path, PathBuf};
 
-#[derive(Debug, Clone)]
+#[cfg(target_env = "gnu")]
+#[path = "gnu.rs"]
+mod imp;
+#[cfg(target_env = "msvc")]
+#[path = "msvc.rs"]
+mod imp;
+
+#[derive(Clone, Debug)]
 /// A builder for compiling Windows resources.
 pub struct Build {
     /// A list of additional include paths to use during preprocessing.
@@ -72,8 +84,8 @@ impl Build {
     }
 
     /// Compiles a Windows resource file (.rc).
-    pub fn compile<P>(&mut self, _rc_file: P) -> Result<(), ()> {
-        unimplemented!()
+    pub fn compile<P: AsRef<Path>>(&mut self, rc_file: P) -> io::Result<()> {
+        Self::find_resource_compiler().and_then(|compiler| self.compile_resource(rc_file, compiler))
     }
 }
 
