@@ -148,13 +148,12 @@ impl Build {
                 let mut stdout_lock = stdout.lock();
                 return stdout_lock.write_all(
                     concat_string!(
-                        "cargo:rustc-link-search=static=",
+                        "cargo:rustc-link-search=native=",
                         out_file.parent().expect("empty parent").to_string_lossy(),
                         "\n",
                         "cargo:rustc-link-lib=static=",
                         out_file
-                            .with_extension("")
-                            .file_name()
+                            .file_stem()
                             .expect("empty filename")
                             .to_string_lossy(),
                         "\n",
