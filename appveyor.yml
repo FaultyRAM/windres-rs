@@ -29,7 +29,7 @@ matrix:
     - CHANNEL: nightly
 install:
   - SET PATH=%USERPROFILE%\.cargo\bin;%PATH%
-  - IF DEFINED MSYS_BITS set C:\msys64\mingw%MSYS_BITS%\bin;PATH=%PATH%
+  - IF DEFINED MSYS_BITS set PATH=C:\msys64\mingw%MSYS_BITS%\bin;%PATH%
   - ps: Start-FileDownload "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
   - rustup-init.exe -y --no-modify-path --default-host %TARGET% --default-toolchain %CHANNEL%
   - rustup -vV
@@ -39,4 +39,4 @@ build_script:
   - cargo build -vv --target=%TARGET% %EXTRA_ARGS%
   - cargo doc -vv --target=%TARGET% %EXTRA_ARGS%
 test_script:
-  - IF NOT DEFINED MSYS_BITS cargo run -p windres-test -vv --target=%TARGET% %EXTRA_ARGS%
+  - cargo run -p windres-test -vv --target=%TARGET% %EXTRA_ARGS%

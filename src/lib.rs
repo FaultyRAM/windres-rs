@@ -29,7 +29,6 @@
 #![forbid(unused_results)]
 #![forbid(variant_size_differences)]
 
-#[cfg(target_env = "msvc")]
 #[macro_use(concat_string)]
 extern crate concat_string;
 
