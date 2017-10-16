@@ -5,15 +5,16 @@
 // http://opensource.org/licenses/MIT>, at your option. This file may not be copied, modified, or
 // distributed except according to those terms.
 
-//! windres-rs test build script.
-
-#![cfg(windows)]
-
+#[cfg(windows)]
 extern crate windres;
 
+#[cfg(windows)]
 use windres::Build;
 
-/// Build script entry point.
+#[cfg(windows)]
 fn main() {
     Build::new().compile("windres-test.rc").unwrap();
 }
+
+#[cfg(not(windows))]
+fn main() {}
