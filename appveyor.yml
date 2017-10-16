@@ -1,5 +1,4 @@
-image:
-  - Visual Studio 2017
+image: Visual Studio 2017
 branches:
   only:
     - staging
@@ -9,27 +8,38 @@ environment:
   matrix:
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: stable
-      MSYS_BITS: 64
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: beta
-      MSYS_BITS: 64
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: nightly
-      MSYS_BITS: 64
       EXTRA_ARGS: --features "clippy"
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: stable
+      WINSDK: v10.0
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: beta
+      WINSDK: v10.0
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: nightly
       EXTRA_ARGS: --features "clippy"
+      WINSDK: v10.0
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: stable
+      WINSDK: v8.1
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: beta
+      WINSDK: v8.1
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: nightly
+      EXTRA_ARGS: --features "clippy"
+      WINSDK: v8.1
 matrix:
   allow_failures:
     - CHANNEL: nightly
 install:
   - SET PATH=%USERPROFILE%\.cargo\bin;%PATH%
-  - IF DEFINED MSYS_BITS set PATH=C:\msys64\mingw%MSYS_BITS%\bin;%PATH%
+  - IF "%TARGET%"=="x86_64-pc-windows-gnu" set PATH=C:\msys64\mingw64\bin;%PATH%
+  - IF NOT "%WINSDK%"=="v10.0" REG DELETE "HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0" /va /f /reg:32
   - ps: Start-FileDownload "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
   - rustup-init.exe -y --no-modify-path --default-host %TARGET% --default-toolchain %CHANNEL%
   - rustup -vV
