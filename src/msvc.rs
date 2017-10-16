@@ -40,6 +40,9 @@ const RC_EXE: &str = "arm64/rc.exe";
 /// Registry subkey for Windows 10 SDK installation data.
 const SUBKEY_WINSDK_10_0: &str = r"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0";
 
+/// Registry subkey for Windows 8.1 SDK installation data.
+const SUBKEY_WINSDK_8_1: &str = r"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1";
+
 /// An unsigned 32-bit integer.
 type DWORD = u32;
 /// A registry key handle.
@@ -94,8 +97,7 @@ impl Build {
                 ))
             }
         } else {
-            Self::get_rc_path_10_0()
-            // TODO: Windows 8.1 SDK support
+            Self::get_rc_path_10_0().or_else(|_| Self::get_rc_path_8_1())
         }
     }
 
@@ -206,6 +208,18 @@ impl Build {
                 .join(sdk_version)
                 .join(RC_EXE),
         )
+    }
+
+    /// Constructs a path to rc.exe in the Windows 8.1 SDK.
+    fn get_rc_path_8_1() -> io::Result<PathBuf> {
+        let subkey = wide_string!(SUBKEY_WINSDK_8_1);
+        let folder_value = wide_string!("InstallationFolder");
+        let sdk_root = Self::reg_get_string(HKEY_LOCAL_MACHINE, &subkey, &folder_value)
+            .or_else(|_| {
+                Self::reg_get_string(HKEY_CURRENT_USER, &subkey, &folder_value)
+            })
+            .map_err(io::Error::from_raw_os_error)?;
+        Ok(Path::new(&sdk_root).join("bin").join(RC_EXE))
     }
 
     #[cfg_attr(feature = "clippy", allow(cast_possible_truncation))]
