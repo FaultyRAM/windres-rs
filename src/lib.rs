@@ -6,6 +6,11 @@
 // distributed except according to those terms.
 
 //! Compiles Windows resource files (.rc) into a Rust program.
+//!
+//! This crate provides utilities for compiling .rc files into object files when targeting Windows.
+//! .rc files specify icons, version information, and *localisable resources* such as menu strings,
+//! which are embedded into a binary at link time. Currently, Rust does not natively support .rc
+//! files, so this crate must be used instead to achieve the same effect.
 
 #![cfg(windows)]
 #![cfg_attr(feature = "clippy", feature(plugin))]
