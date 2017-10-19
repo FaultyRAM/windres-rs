@@ -110,9 +110,6 @@ impl Build {
         let mut cmd = Command::new(compiler);
         // User-specific options.
         for inc_path in &self.extra_include_dirs {
-            // Note the lack of separating whitespace when we specify arguments. It does matter! If
-            // we include it, rc.exe won't ignore it like you'd expect, but will interpret it as
-            // part of the argument!
             let _ = cmd.arg(concat_string!("/i", inc_path.to_string_lossy()));
         }
         for def in &self.extra_cpp_defs {
@@ -185,23 +182,14 @@ impl Build {
         let subkey = wide_string!(SUBKEY_WINSDK_10_0);
         let folder_value = wide_string!("InstallationFolder");
         let version_value = wide_string!("ProductVersion");
-        let sdk_root = Self::reg_get_string(HKEY_LOCAL_MACHINE, &subkey, &folder_value)
-            .or_else(|_| {
-                Self::reg_get_string(HKEY_CURRENT_USER, &subkey, &folder_value)
-            })
-            .map_err(io::Error::from_raw_os_error)?;
-        let sdk_version = Self::reg_get_string(HKEY_LOCAL_MACHINE, &subkey, &version_value)
-            .or_else(|_| {
-                Self::reg_get_string(HKEY_CURRENT_USER, &subkey, &version_value)
-            })
-            .map(|mut s| {
-                // Windows SDK versions don't seem to use the build number, so just stick a zero on
-                // the end.
-                // (Now watch as Microsoft publish an update that increments the build number...)
-                s.push(".0");
-                s
-            })
-            .map_err(io::Error::from_raw_os_error)?;
+        let sdk_root = Self::reg_find_string(&subkey, &folder_value)?;
+        let sdk_version = Self::reg_find_string(&subkey, &version_value).map(|mut s| {
+            // Windows SDK versions don't seem to use the build number, so just stick a zero on
+            // the end.
+            // (Now watch as Microsoft publish an update that increments the build number...)
+            s.push(".0");
+            s
+        })?;
         Ok(
             Path::new(&sdk_root)
                 .join("bin")
@@ -214,12 +202,15 @@ impl Build {
     fn get_rc_path_8_1() -> io::Result<PathBuf> {
         let subkey = wide_string!(SUBKEY_WINSDK_8_1);
         let folder_value = wide_string!("InstallationFolder");
-        let sdk_root = Self::reg_get_string(HKEY_LOCAL_MACHINE, &subkey, &folder_value)
-            .or_else(|_| {
-                Self::reg_get_string(HKEY_CURRENT_USER, &subkey, &folder_value)
-            })
-            .map_err(io::Error::from_raw_os_error)?;
+        let sdk_root = Self::reg_find_string(&subkey, &folder_value)?;
         Ok(Path::new(&sdk_root).join("bin").join(RC_EXE))
+    }
+
+    /// Looks for a string value in HKLM, or in HKCU if not found.
+    fn reg_find_string(subkey: &[u16], value: &[u16]) -> io::Result<OsString> {
+        Self::reg_get_string(HKEY_LOCAL_MACHINE, subkey, value)
+            .or_else(|_| Self::reg_get_string(HKEY_CURRENT_USER, subkey, value))
+            .map_err(io::Error::from_raw_os_error)
     }
 
     #[cfg_attr(feature = "clippy", allow(cast_possible_truncation))]
