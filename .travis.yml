@@ -7,9 +7,7 @@ sudo: false
 env:
   - FORMATTING=true
   - FORMATTING=false
-os:
-  - linux
-  - osx
+os: linux
 language: rust
 rust:
   - stable
@@ -20,8 +18,6 @@ matrix:
     - env: "FORMATTING=false"
       rust: nightly
   exclude:
-    - env: "FORMATTING=true"
-      os: osx
     - env: "FORMATTING=true"
       rust: stable
     - env: "FORMATTING=true"
