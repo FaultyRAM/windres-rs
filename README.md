@@ -33,15 +33,23 @@ fn main() {
 
 ## Usage
 
-`windres` is designed for use in Cargo build scripts. To use `windres` in your own projects, first
-add it as a build dependency in `Cargo.toml`:
+You need to install the resource compiler for your target ABI in order for `windres` to work.
+Currently the following compilers are supported:
+
+* `windres.exe` for GNU targets (included in the [mingw-w64][7] toolchain)
+* `rc.exe` for MSVC targets (included in the Windows SDK; `windres` requires the Windows 8.1 SDK or
+  the Windows 10 SDK, both of which can be installed as part of either [Visual Studio 2017][8] or
+  the Build Tools for Visual Studio 2017)
+
+Once the appropriate resource compiler is installed, add `windres` as a build dependency in
+`Cargo.toml`:
 
 ```toml
 [target.'cfg(windows)'.build-dependencies]
 windres = "0.1"
 ```
 
-Then, add a reference to `windres` in your build script:
+Then, create a build script (if you haven't already) and add a reference to `windres`:
 
 ```rust
 #[cfg(windows)]
@@ -71,3 +79,5 @@ conditions.
 [4]: https://docs.rs/windres
 [5]: https://www.rust-lang.org
 [6]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa380599(v=vs.85).aspx
+[7]: https://mingw-w64.org
+[8]: https://www.visualstudio.com
