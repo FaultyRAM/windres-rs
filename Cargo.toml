@@ -8,7 +8,7 @@ authors = ["FaultyRAM <explodingpsu@gmail.com>"]
 description = "Compiles Windows resource files (.rc) into a Rust program."
 repository = "https://github.com/FaultyRAM/windres-rs"
 readme = "README.md"
-keywords = ["Windows", "resource", ".rc"]
+keywords = ["Windows", "resource", "rc"]
 categories = ["development-tools", "os::windows-apis"]
 license = "Apache-2.0 OR MIT"
 
