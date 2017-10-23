@@ -16,7 +16,7 @@ The following example demonstrates how to embed an icon in a binary crate:
 ```rc
 // hello-world.rc
 
-1 ICON hello-world.ico
+1 ICON "hello-world.ico"
 ```
 
 ```rust
