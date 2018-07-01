@@ -27,7 +27,7 @@
 #![forbid(unused_results)]
 #![forbid(variant_size_differences)]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy))]
-#![cfg_attr(feature = "cargo-clippy", deny(clippy_pedantic))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_pedantic))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_cargo))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_complexity))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_correctness))]
