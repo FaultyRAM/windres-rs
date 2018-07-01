@@ -3,11 +3,11 @@ branches:
     - staging
     - trying
     - master
+dist: trusty
 sudo: false
-env:
-  - FORMATTING=true
-  - FORMATTING=false
-os: linux
+os:
+  - linux
+  - osx
 language: rust
 rust:
   - stable
@@ -15,12 +15,5 @@ rust:
   - nightly
 matrix:
   allow_failures:
-    - env: "FORMATTING=false"
-      rust: nightly
-  exclude:
-    - env: "FORMATTING=true"
-      rust: stable
-    - env: "FORMATTING=true"
-      rust: beta
-before_install: chmod +x ./.travis-script.sh
-script: ./.travis-script.sh
+    - beta
+    - nightly
