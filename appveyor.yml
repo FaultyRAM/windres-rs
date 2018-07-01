@@ -8,33 +8,49 @@ environment:
   matrix:
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: stable
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --write-mode diff
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: beta
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --check
     - TARGET: x86_64-pc-windows-gnu
       CHANNEL: nightly
-      EXTRA_ARGS: --features "clippy"
+      CARGO_CHECK: cargo clippy
+      CARGO_FMT: cargo fmt -- --check
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: stable
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --write-mode diff
       WINSDK: v10.0
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: beta
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --check
       WINSDK: v10.0
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: nightly
-      EXTRA_ARGS: --features "clippy"
+      CARGO_CHECK: cargo clippy
+      CARGO_FMT: cargo fmt -- --check
       WINSDK: v10.0
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: stable
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --write-mode diff
       WINSDK: v8.1
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: beta
+      CARGO_CHECK: cargo check
+      CARGO_FMT: cargo fmt -- --check
       WINSDK: v8.1
     - TARGET: x86_64-pc-windows-msvc
       CHANNEL: nightly
-      EXTRA_ARGS: --features "clippy"
+      CARGO_CHECK: cargo clippy
+      CARGO_FMT: cargo fmt -- --check
       WINSDK: v8.1
 matrix:
   allow_failures:
+    - CHANNEL: beta
     - CHANNEL: nightly
 install:
   - SET PATH=%USERPROFILE%\.cargo\bin;%PATH%
@@ -45,8 +61,12 @@ install:
   - rustup -vV
   - rustc -vV
   - cargo -vV
+  - rustup component add rustfmt-preview
+  - cargo fmt -v --version
+  - IF "%CHANNEL%"=="nightly" cargo install --git https://github.com/rust-lang-nursery/rust-clippy.git clippy && cargo clippy -V
 build_script:
-  - cargo build -vv --target=%TARGET% %EXTRA_ARGS%
-  - cargo doc -vv --target=%TARGET% %EXTRA_ARGS%
+  - "%CARGO_FMT%"
+  - "%CARGO_CHECK%"
+  - cargo doc -p windres --target=%TARGET%
 test_script:
-  - cargo run -p windres-test -vv --target=%TARGET% %EXTRA_ARGS%
+  - cargo run -p windres-test -vv --target=%TARGET%
