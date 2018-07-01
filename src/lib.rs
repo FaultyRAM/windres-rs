@@ -36,6 +36,7 @@
 
 #[macro_use(concat_string)]
 extern crate concat_string;
+#[cfg(target_env = "msvc")]
 extern crate find_winsdk;
 
 use std::io;
