@@ -1,7 +1,7 @@
 # windres-rs
 
-[![Travis](https://img.shields.io/travis/FaultyRAM/windres-rs.svg)][1]
-[![AppVeyor](https://img.shields.io/appveyor/ci/FaultyRAM/windres-rs.svg)][2]
+[![Travis CI](https://travis-ci.org/FaultyRAM/windres-rs.svg)][1]
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/ffj632w0xqh98c83?retina=true&svg=true)][2]
 [![Crates.io](https://img.shields.io/crates/v/windres.svg)][3]
 [![Docs.rs](https://docs.rs/windres/badge.svg)][4]
 

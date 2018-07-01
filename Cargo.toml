@@ -12,20 +12,5 @@ keywords = ["Windows", "resource", "rc"]
 categories = ["development-tools", "os::windows-apis"]
 license = "Apache-2.0 OR MIT"
 
-[badges.appveyor]
-repository = "FaultyRAM/windres-rs"
-
-[badges.travis-ci]
-repository = "FaultyRAM/windres-rs"
-
-[badges.is-it-maintained-issue-resolution]
-repository = "FaultyRAM/windres-rs"
-
-[badges.is-it-maintained-open-issues]
-repository = "FaultyRAM/windres-rs"
-
-[badges.maintenance]
-status = "actively-developed"
-
 [target.'cfg(windows)'.dependencies]
 concat-string = "1"
