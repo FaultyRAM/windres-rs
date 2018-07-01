@@ -46,7 +46,7 @@ Once the appropriate resource compiler is installed, add `windres` as a build de
 
 ```toml
 [target.'cfg(windows)'.build-dependencies]
-windres = "0.1"
+windres = "0.2"
 ```
 
 Then, create a build script (if you haven't already) and add a reference to `windres`:

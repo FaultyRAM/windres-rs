@@ -12,7 +12,7 @@
 //! which are embedded into a binary at link time. Currently, Rust does not natively support .rc
 //! files, so this crate must be used instead to achieve the same effect.
 
-#![cfg(windows)]
+#![cfg(target_os = "windows")]
 #![forbid(warnings)]
 #![deny(unused)]
 #![forbid(box_pointers)]
@@ -36,6 +36,7 @@
 
 #[macro_use(concat_string)]
 extern crate concat_string;
+extern crate find_winsdk;
 
 use std::io;
 use std::path::{Path, PathBuf};

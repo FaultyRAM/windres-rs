@@ -3,7 +3,7 @@ members = ["windres-test"]
 
 [package]
 name = "windres"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["FaultyRAM <explodingpsu@gmail.com>"]
 description = "Compiles Windows resource files (.rc) into a Rust program."
 repository = "https://github.com/FaultyRAM/windres-rs"
@@ -12,5 +12,6 @@ keywords = ["Windows", "resource", "rc"]
 categories = ["development-tools", "os::windows-apis"]
 license = "Apache-2.0 OR MIT"
 
-[target.'cfg(windows)'.dependencies]
+[target.'cfg(target_os = "windows")'.dependencies]
 concat-string = "1"
+find-winsdk = "0.1"
