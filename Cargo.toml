@@ -3,33 +3,17 @@ members = ["windres-test"]
 
 [package]
 name = "windres"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["FaultyRAM <explodingpsu@gmail.com>"]
 description = "Compiles Windows resource files (.rc) into a Rust program."
 repository = "https://github.com/FaultyRAM/windres-rs"
 readme = "README.md"
 keywords = ["Windows", "resource", "rc"]
-categories = ["development-tools", "os::windows-apis"]
+categories = ["development-tools::build-utils"]
 license = "Apache-2.0 OR MIT"
 
-[badges.appveyor]
-repository = "FaultyRAM/windres-rs"
+[target.'cfg(target_os = "windows")'.dependencies.concat-string]
+version = "1"
 
-[badges.travis-ci]
-repository = "FaultyRAM/windres-rs"
-
-[badges.is-it-maintained-issue-resolution]
-repository = "FaultyRAM/windres-rs"
-
-[badges.is-it-maintained-open-issues]
-repository = "FaultyRAM/windres-rs"
-
-[badges.maintenance]
-status = "actively-developed"
-
-[dependencies.clippy]
-version = "0.0"
-optional = true
-
-[target.'cfg(windows)'.dependencies]
-concat-string = "1"
+[target.'cfg(all(target_os = "windows", target_env = "msvc"))'.dependencies.find-winsdk]
+version = "0.1"

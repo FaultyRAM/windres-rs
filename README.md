@@ -1,7 +1,7 @@
 # windres-rs
 
-[![Travis](https://img.shields.io/travis/FaultyRAM/windres-rs.svg)][1]
-[![AppVeyor](https://img.shields.io/appveyor/ci/FaultyRAM/windres-rs.svg)][2]
+[![Travis CI](https://travis-ci.org/FaultyRAM/windres-rs.svg)][1]
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/ffj632w0xqh98c83?retina=true&svg=true)][2]
 [![Crates.io](https://img.shields.io/crates/v/windres.svg)][3]
 [![Docs.rs](https://docs.rs/windres/badge.svg)][4]
 
@@ -46,7 +46,7 @@ Once the appropriate resource compiler is installed, add `windres` as a build de
 
 ```toml
 [target.'cfg(windows)'.build-dependencies]
-windres = "0.1"
+windres = "0.2"
 ```
 
 Then, create a build script (if you haven't already) and add a reference to `windres`:

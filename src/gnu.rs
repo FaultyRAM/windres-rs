@@ -1,4 +1,4 @@
-// Copyright (c) 2017 FaultyRAM
+// Copyright (c) 2017-2018 FaultyRAM
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
 // http://www.apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
@@ -60,8 +60,7 @@ impl Build {
             .expect("invalid input filename");
         let mut libname = OsString::from("lib");
         libname.push(&rc_filename);
-        let out_file = Path::new(&env::var_os("OUT_DIR")
-            .expect("`OUT_DIR` is invalid or not set"))
+        let out_file = Path::new(&env::var_os("OUT_DIR").expect("`OUT_DIR` is invalid or not set"))
             .join(libname)
             .with_extension("res.a");
         let _ = cmd.args(&[
