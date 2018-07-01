@@ -60,8 +60,7 @@ impl Build {
             .expect("invalid input filename");
         let mut libname = OsString::from("lib");
         libname.push(&rc_filename);
-        let out_file = Path::new(&env::var_os("OUT_DIR")
-            .expect("`OUT_DIR` is invalid or not set"))
+        let out_file = Path::new(&env::var_os("OUT_DIR").expect("`OUT_DIR` is invalid or not set"))
             .join(libname)
             .with_extension("res.a");
         let _ = cmd.args(&[

@@ -13,16 +13,9 @@
 //! files, so this crate must be used instead to achieve the same effect.
 
 #![cfg(windows)]
-#![cfg_attr(feature = "clippy", feature(plugin))]
-#![cfg_attr(feature = "clippy", plugin(clippy))]
-#![cfg_attr(feature = "clippy", forbid(clippy))]
-#![cfg_attr(feature = "clippy", forbid(clippy_internal))]
-#![cfg_attr(feature = "clippy", deny(clippy_pedantic))]
-#![cfg_attr(feature = "clippy", deny(clippy_restrictions))]
 #![forbid(warnings)]
-#![forbid(anonymous_parameters)]
+#![deny(unused)]
 #![forbid(box_pointers)]
-#![forbid(fat_ptr_transmutes)]
 #![forbid(missing_copy_implementations)]
 #![forbid(missing_debug_implementations)]
 #![forbid(missing_docs)]
@@ -33,6 +26,13 @@
 #![deny(unused_qualifications)]
 #![forbid(unused_results)]
 #![forbid(variant_size_differences)]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy_pedantic))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_cargo))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_complexity))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_correctness))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_perf))]
+#![cfg_attr(feature = "cargo-clippy", forbid(clippy_style))]
 
 #[macro_use(concat_string)]
 extern crate concat_string;

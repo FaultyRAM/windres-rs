@@ -7,12 +7,12 @@
 
 //! MSVC implementation details.
 
-use std::{env, ptr};
 use std::ffi::{OsStr, OsString};
 use std::io::{self, Write};
 use std::os::windows::ffi::{OsStrExt, OsStringExt};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::{env, ptr};
 use Build;
 
 /// Generate a wide string.
@@ -21,7 +21,7 @@ macro_rules! wide_string {
         use std::iter;
         let v: Vec<u16> = OsStr::new($s).encode_wide().chain(iter::once(0)).collect();
         v
-    }}
+    }};
 }
 
 #[cfg(target_arch = "x86")]
@@ -128,8 +128,7 @@ impl Build {
             .as_ref()
             .file_name()
             .expect("invalid input filename");
-        let out_file = Path::new(&env::var_os("OUT_DIR")
-            .expect("`OUT_DIR` is invalid or not set"))
+        let out_file = Path::new(&env::var_os("OUT_DIR").expect("`OUT_DIR` is invalid or not set"))
             .join(rc_filename)
             .with_extension("res.lib");
         let mut fo = OsString::from("/fo");
@@ -190,12 +189,10 @@ impl Build {
             s.push(".0");
             s
         })?;
-        Ok(
-            Path::new(&sdk_root)
-                .join("bin")
-                .join(sdk_version)
-                .join(RC_EXE),
-        )
+        Ok(Path::new(&sdk_root)
+            .join("bin")
+            .join(sdk_version)
+            .join(RC_EXE))
     }
 
     /// Constructs a path to rc.exe in the Windows 8.1 SDK.
@@ -213,9 +210,9 @@ impl Build {
             .map_err(io::Error::from_raw_os_error)
     }
 
-    #[cfg_attr(feature = "clippy", allow(cast_possible_truncation))]
-    #[cfg_attr(feature = "clippy", allow(indexing_slicing))]
-    #[cfg_attr(feature = "clippy", allow(integer_arithmetic))]
+    #[cfg_attr(feature = "cargo-clippy", allow(cast_possible_truncation))]
+    #[cfg_attr(feature = "cargo-clippy", allow(indexing_slicing))]
+    #[cfg_attr(feature = "cargo-clippy", allow(integer_arithmetic))]
     /// Safe `RegGetValueW` wrapper for obtaining strings.
     fn reg_get_string(key: HKEY, subkey: &[u16], value: &[u16]) -> Result<OsString, LONG> {
         unsafe {
