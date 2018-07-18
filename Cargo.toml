@@ -17,3 +17,6 @@ version = "1"
 
 [target.'cfg(all(target_os = "windows", target_env = "msvc"))'.dependencies.find-winsdk]
 version = "0.2"
+
+[package.metadata.docs.rs]
+default-target = "x86_64-pc-windows-msvc"
