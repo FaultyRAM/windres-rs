@@ -27,20 +27,24 @@ const RC_EXE: &str = "arm64/rc.exe";
 impl Build {
     /// Locates the tool used to compile resources.
     pub(crate) fn find_resource_compiler() -> io::Result<PathBuf> {
-        match SdkInfo::find(SdkVersion::Any) {
-            Ok(Some(info)) => {
-                let path_suffix = if info.product_version().starts_with("10.") {
-                    concat_string!("bin/", info.product_version(), ".0/", RC_EXE)
-                } else {
-                    concat_string!("bin/", RC_EXE)
-                };
-                Ok(Path::new(info.installation_folder()).join(path_suffix))
+        if let Some(bin_path) = env::var_os("WindowsSdkVerBinPath") {
+            Ok(Path::new(&bin_path).join(RC_EXE))
+        } else {
+            match SdkInfo::find(SdkVersion::Any) {
+                Ok(Some(info)) => {
+                    let path_suffix = if info.product_version().starts_with("10.") {
+                        concat_string!("bin/", info.product_version(), ".0/", RC_EXE)
+                    } else {
+                        concat_string!("bin/", RC_EXE)
+                    };
+                    Ok(Path::new(info.installation_folder()).join(path_suffix))
+                }
+                Ok(None) => Err(io::Error::new(
+                    ErrorKind::NotFound,
+                    "could not locate a Windows SDK installation",
+                )),
+                Err(e) => Err(e),
             }
-            Ok(None) => Err(io::Error::new(
-                ErrorKind::NotFound,
-                "could not locate a Windows SDK installation",
-            )),
-            Err(e) => Err(e),
         }
     }
 
