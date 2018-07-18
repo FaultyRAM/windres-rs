@@ -7,7 +7,7 @@
 
 //! MSVC implementation details.
 
-use find_winsdk::SdkInfo;
+use find_winsdk::{SdkInfo, SdkVersion};
 use std::env;
 use std::ffi::{OsStr, OsString};
 use std::io::{self, ErrorKind, Write};
@@ -27,26 +27,20 @@ const RC_EXE: &str = "arm64/rc.exe";
 impl Build {
     /// Locates the tool used to compile resources.
     pub(crate) fn find_resource_compiler() -> io::Result<PathBuf> {
-        if let Some(s) = env::var_os("WindowsSdkVerBinPath") {
-            Ok(Path::new(&s).join(RC_EXE))
-        } else if let Some(s) = env::var_os("WindowsSdkDir") {
-            Ok(Path::new(&s).join(concat_string!("bin/", RC_EXE)))
-        } else {
-            SdkInfo::winsdk_10().and_then(|opt| {
-                if let Some(info) = opt {
-                    let path_end = concat_string!("bin/", info.product_version(), ".0/", RC_EXE);
-                    Ok(info.installation_folder().join(path_end))
+        match SdkInfo::find(SdkVersion::Any) {
+            Ok(Some(info)) => {
+                let path_suffix = if info.product_version().starts_with("10.") {
+                    concat_string!("bin/", info.product_version(), ".0/", RC_EXE)
                 } else {
-                    SdkInfo::winsdk_8_1().and_then(|opt| {
-                        if let Some(info) = opt {
-                            let path_end = concat_string!("bin/", RC_EXE);
-                            Ok(info.installation_folder().join(path_end))
-                        } else {
-                            Err(io::Error::new(ErrorKind::NotFound, "could not find rc.exe"))
-                        }
-                    })
-                }
-            })
+                    concat_string!("bin/", RC_EXE)
+                };
+                Ok(Path::new(info.installation_folder()).join(path_suffix))
+            }
+            Ok(None) => Err(io::Error::new(
+                ErrorKind::NotFound,
+                "could not locate a Windows SDK installation",
+            )),
+            Err(e) => Err(e),
         }
     }
 

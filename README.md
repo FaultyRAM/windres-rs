@@ -37,9 +37,8 @@ You need to install the resource compiler for your target ABI in order for `wind
 Currently the following compilers are supported:
 
 * `windres.exe` for GNU targets (included in the [mingw-w64][7] toolchain)
-* `rc.exe` for MSVC targets (included in the Windows SDK; `windres` requires the Windows 8.1 SDK or
-  the Windows 10 SDK, both of which can be installed as part of either [Visual Studio 2017][8] or
-  the Build Tools for Visual Studio 2017)
+* `rc.exe` for MSVC targets (included in the Windows SDK, which can be installed via Visual Studio
+  Installer)
 
 Once the appropriate resource compiler is installed, add `windres` as a build dependency in
 `Cargo.toml`:
