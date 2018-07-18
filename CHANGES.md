@@ -1,6 +1,11 @@
 # windres-rs Changelog
 
-## 0.2.0 (WIP)
+## 0.2.1 (18/08/2018)
+
+* Update find-winsdk to 0.2. This fixes Windows 8.1A SDK support and adds support for earlier
+  versions of the Windows SDK through to v6.0.
+
+## 0.2.0 (1/08/2018)
 
 * The strategy for detecting rc.exe on MSVC ABI targets has changed. Now windres tries the
   following, in order:
