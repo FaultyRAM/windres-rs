@@ -1,11 +1,10 @@
 # windres-rs
 
 [![Travis CI](https://travis-ci.org/FaultyRAM/windres-rs.svg)][1]
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/ffj632w0xqh98c83?retina=true&svg=true)][2]
-[![Crates.io](https://img.shields.io/crates/v/windres.svg)][3]
-[![Docs.rs](https://docs.rs/windres/badge.svg)][4]
+[![Crates.io](https://img.shields.io/crates/v/windres.svg)][2]
+[![Docs.rs](https://docs.rs/windres/badge.svg)][3]
 
-`windres` is a [Rust][5] library crate for compiling [Windows resource (.rc) files][6] into object
+`windres` is a [Rust][4] library crate for compiling [Windows resource (.rc) files][5] into object
 files at build time, which are then forwarded to the linker. This allows for embedding icons,
 version information, native UI data, etc. in binaries compiled from Rust code.
 
@@ -36,7 +35,7 @@ fn main() {
 You need to install the resource compiler for your target ABI in order for `windres` to work.
 Currently the following compilers are supported:
 
-* `windres.exe` for GNU targets (included in the [mingw-w64][7] toolchain)
+* `windres.exe` for GNU targets (included in the [mingw-w64][6] toolchain)
 * `rc.exe` for MSVC targets (included in the Windows SDK, which can be installed via Visual Studio
   Installer)
 
@@ -73,10 +72,8 @@ license, shall be dual licensed as above, without any additional terms or
 conditions.
 
 [1]: https://travis-ci.org/FaultyRAM/windres-rs
-[2]: https://ci.appveyor.com/project/FaultyRAM/windres-rs
-[3]: https://crates.io/crates/windres
-[4]: https://docs.rs/windres
-[5]: https://www.rust-lang.org
-[6]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa380599(v=vs.85).aspx
-[7]: https://mingw-w64.org
-[8]: https://www.visualstudio.com
+[2]: https://crates.io/crates/windres
+[3]: https://docs.rs/windres
+[4]: https://www.rust-lang.org
+[5]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa380599(v=vs.85).aspx
+[6]: https://mingw-w64.org

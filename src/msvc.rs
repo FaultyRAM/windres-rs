@@ -7,13 +7,13 @@
 
 //! MSVC implementation details.
 
+use super::Build;
 use find_winsdk::{SdkInfo, SdkVersion};
 use std::env;
 use std::ffi::{OsStr, OsString};
 use std::io::{self, ErrorKind, Write};
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use Build;
 
 #[cfg(target_arch = "x86")]
 const RC_EXE: &str = "x86/rc.exe";
@@ -105,7 +105,8 @@ impl Build {
                         "cargo:rerun-if-changed=",
                         rc_file.as_ref().to_string_lossy(),
                         "\n"
-                    ).as_bytes(),
+                    )
+                    .as_bytes(),
                 );
             }
             let e = if let Some(code) = status.code() {

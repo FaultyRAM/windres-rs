@@ -5,30 +5,31 @@
 // http://opensource.org/licenses/MIT>, at your option. This file may not be copied, modified, or
 // distributed except according to those terms.
 
-//! GNU implementation details.
-
+use super::Build;
 use std::env;
 use std::ffi::{OsStr, OsString};
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use Build;
 
 impl Build {
     /// Locates the tool used to compile resources.
     pub(crate) fn find_resource_compiler() -> io::Result<PathBuf> {
-        if let Some(p) = env::var_os("PATH").and_then(|path| {
-            env::split_paths(&path)
-                .map(|p| p.join("windres.exe"))
-                .find(|p| p.exists())
-        }) {
-            Ok(p)
-        } else {
-            Err(io::Error::new(
-                io::ErrorKind::NotFound,
-                "could not locate windres.exe",
-            ))
-        }
+        env::var_os("PATH")
+            .and_then(|path| {
+                env::split_paths(&path)
+                    .map(|p| p.join("windres.exe"))
+                    .find(|p| p.exists())
+            })
+            .map_or_else(
+                || {
+                    Err(io::Error::new(
+                        io::ErrorKind::NotFound,
+                        "could not locate windres.exe",
+                    ))
+                },
+                Ok,
+            )
     }
 
     /// Invokes the resource compiler using the current arguments.
@@ -87,7 +88,8 @@ impl Build {
                         "cargo:rerun-if-changed=",
                         rc_file.as_ref().to_string_lossy(),
                         "\n"
-                    ).as_bytes(),
+                    )
+                    .as_bytes(),
                 );
             }
             let e = if let Some(code) = status.code() {

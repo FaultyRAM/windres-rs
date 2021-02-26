@@ -1,19 +1,30 @@
+sudo: false
 branches:
   only:
-    - staging
-    - trying
-    - master
-dist: trusty
-sudo: false
+  - staging
+  - trying
+  - master
 os:
-  - linux
-  - osx
+  - windows
 language: rust
 rust:
-  - stable
-  - beta
-  - nightly
+  - stable-x86_64-pc-windows-msvc
+  - stable-x86_64-pc-windows-gnu
+  - beta-x86_64-pc-windows-msvc
+  - beta-x86_64-pc-windows-gnu
+  - nightly-x86_64-pc-windows-msvc
+  - nightly-x86_64-pc-windows-gnu
 matrix:
   allow_failures:
-    - beta
-    - nightly
+  - rust: beta-x86_64-pc-windows-msvc
+  - rust: beta-x86_64-pc-windows-gnu
+  - rust: nightly-x86_64-pc-windows-msvc
+  - rust: nightly-x86_64-pc-windows-gnu
+  fast_finish: true
+install:
+  - rustup component add clippy rustfmt
+script:
+  - cargo clippy
+  - cargo build -p windres-test
+  - cargo doc --no-deps
+  - cargo fmt --all -- --check
