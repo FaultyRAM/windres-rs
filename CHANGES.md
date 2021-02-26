@@ -1,5 +1,13 @@
 # windres-rs Changelog
 
+## 0.2.2 (27/02/2021)
+
+* Previous versions of this crate were broken for MSVC targets by a breaking change in Rust (see
+  https://github.com/rust-lang/rust/pull/72785). This version adds a workaround for the breakage.
+* To prevent future breakage, trivial changes were made to parts of the code. This is a refactor,
+  i.e. no change in behaviour from the previous version, but the minimum working Rust version may
+  have increased as a result.
+
 ## 0.2.1 (18/08/2018)
 
 * Update find-winsdk to 0.2. This fixes Windows 8.1A SDK support and adds support for earlier
