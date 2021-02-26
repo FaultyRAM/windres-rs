@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 FaultyRAM
+// Copyright (c) 2017-2021 FaultyRAM
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
 // http://www.apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
@@ -13,25 +13,26 @@
 //! files, so this crate must be used instead to achieve the same effect.
 
 #![cfg(target_os = "windows")]
-#![forbid(warnings)]
-#![deny(unused)]
-#![forbid(box_pointers)]
-#![forbid(missing_copy_implementations)]
-#![forbid(missing_debug_implementations)]
-#![forbid(missing_docs)]
-#![forbid(trivial_casts)]
-#![forbid(trivial_numeric_casts)]
-#![forbid(unused_extern_crates)]
-#![forbid(unused_import_braces)]
-#![deny(unused_qualifications)]
-#![forbid(unused_results)]
-#![forbid(variant_size_differences)]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy))]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy_pedantic))]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy_complexity))]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy_correctness))]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy_perf))]
-#![cfg_attr(feature = "cargo-clippy", forbid(clippy_style))]
+#![deny(
+    clippy::all,
+    clippy::pedantic,
+    warnings,
+    future_incompatible,
+    rust_2018_idioms,
+    rustdoc,
+    unused,
+    deprecated_in_future,
+    missing_copy_implementations,
+    missing_debug_implementations,
+    non_ascii_idents,
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unused_import_braces,
+    unused_lifetimes,
+    unused_results
+)]
+#![allow(clippy::must_use_candidate, missing_doc_code_examples)]
 
 #[macro_use(concat_string)]
 extern crate concat_string;
@@ -78,7 +79,7 @@ impl Build {
     /// Specifies an additional preprocessor definition to use during preprocessing.
     pub fn define<'a, V: Into<Option<&'a str>>>(&mut self, name: &str, value: V) -> &mut Self {
         self.extra_cpp_defs
-            .push((name.to_owned(), value.into().map(|s| s.to_owned())));
+            .push((name.to_owned(), value.into().map(ToOwned::to_owned)));
         self
     }
 
@@ -89,6 +90,11 @@ impl Build {
     }
 
     /// Compiles a Windows resource file (.rc).
+    ///
+    /// # Errors
+    ///
+    /// This method returns a `std::io::Error` if it either cannot locate a resource compiler or
+    /// fails to compile the resource.
     pub fn compile<P: AsRef<Path>>(&mut self, rc_file: P) -> io::Result<()> {
         Self::find_resource_compiler().and_then(|compiler| self.compile_resource(rc_file, compiler))
     }
