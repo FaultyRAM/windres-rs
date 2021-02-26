@@ -96,7 +96,7 @@ impl Build {
                         "cargo:rustc-link-search=native=",
                         out_file.parent().expect("empty parent").to_string_lossy(),
                         "\n",
-                        "cargo:rustc-link-lib=static=",
+                        "cargo:rustc-link-lib=",
                         out_file
                             .file_stem()
                             .expect("empty filename")
